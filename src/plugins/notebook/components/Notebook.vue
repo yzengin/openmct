@@ -407,6 +407,11 @@ export default {
                 return;
             }
 
+            if (this.selectedPage.id === pageId
+                && this.selectedSection.id === sectionId) {
+                return;
+            }
+
             this.changeSelectedSection({
                 sectionId,
                 pageId
