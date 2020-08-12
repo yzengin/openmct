@@ -230,7 +230,6 @@ export default {
             const section = this.getSelectedSection();
 
             return {
-                domainObject: this.internalDomainObject,
                 notebookMeta,
                 section,
                 page
@@ -433,7 +432,7 @@ export default {
             const defaultNotebookObject = await this.getDefaultNotebookObject();
             if (defaultNotebookObject.identifier.key !== notebookStorage.notebookMeta.identifier.key) {
                 this.removeDefaultClass(defaultNotebookObject);
-                setDefaultNotebook(this.openmct, notebookStorage);
+                setDefaultNotebook(this.openmct, notebookStorage, this.internalDomainObject);
             }
 
             if (this.defaultSectionId.length === 0 || this.defaultSectionId !== notebookStorage.section.id) {
