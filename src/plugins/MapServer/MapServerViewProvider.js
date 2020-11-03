@@ -20,7 +20,7 @@
  * at runtime from the About dialog for additional information.
  *****************************************************************************/
 
-import WebPage from '../WebPage/WebPage.vue';
+import WebPage from '../webPage/components/WebPage.vue';
 import Vue from 'vue';
 
 export default class MapServerViewProvider {
