@@ -47,7 +47,7 @@ export default function MapServerViewProvider(openmct) {
                         data() {
                             return {
                                 domainObject
-                            }
+                            };
                         },
                         template: `
                             <MapServerComponent
