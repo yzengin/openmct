@@ -22,7 +22,7 @@
 
 import MapServerViewProvider from './MapServerViewProvider';
 
-const MAP_SERVER_URL = 'http://localhost:8080';
+const MAP_SERVER_URL = 'http://localhost:8888';
 
 export default function MapServerPlugin() {
     return function install(openmct) {

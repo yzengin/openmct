@@ -20,68 +20,50 @@
  * at runtime from the About dialog for additional information.
  *****************************************************************************/
 
-import WebPage from '../webPage/components/WebPage.vue';
+import MapServerViewComponent from './MapServerViewComponent.vue';
 import Vue from 'vue';
 
-export default class MapServerViewProvider {
-    constructor(openmct) {
-        this.openmct = openmct;
+export default function MapServerViewProvider(openmct) {
+    return {
+        key: 'mapView',
+        name: 'Map View',
+        cssClass: 'icon-layers',
+        canView: function (domainObject) {
+            return domainObject.type === 'mapView' || domainObject.type === 'map';
+        },
+        view: function (domainObject) {
+            let component;
 
-        this.key = 'map';
-        this.name = 'Map';
-        this.cssClass = 'icon-layers';
-    }
-
-    canView(domainObject) {
-        return domainObject.type === 'map';
-    }
-
-    view(domainObject, objectPath) {
-        let component;
-
-        const view = {
-            show: function (element) {
-                component = new Vue({
-                    el: element,
-                    components: {
-                        MapServerComponent: WebPage
-                    },
-                    data() {
-                        return {
-                            view
-                        };
-                    },
-                    provide: {
-                        openmct: this.openmct,
-                        objectPath
-                    },
-                    template: `
-                        <map-server-component
-                            ref="mapServerComponent"
-                            :view="view"
-                        />
-                    `
-                });
-            },
-            getViewContext() {
-                if (component) {
-                    let context = component.$refs.mapServerComponent.getViewContext();
-
-                    return context;
-                } else {
-                    console.log('what should happen?');
+            return {
+                show: function (element) {
+                    component = new Vue({
+                        el: element,
+                        components: {
+                            MapServerComponent: MapServerViewComponent
+                        },
+                        provide: {
+                            openmct
+                        },
+                        data() {
+                            return {
+                                domainObject
+                            }
+                        },
+                        template: `
+                            <MapServerComponent
+                                :domain-object="domainObject"
+                            />
+                        `
+                    });
+                },
+                destroy: function (element) {
+                    component.$destroy();
+                    component = undefined;
                 }
-            },
-            destroy: function (element) {
-                component.$destroy();
-                component = undefined;
-            }
-        };
-
-        return view;
-    }
-
-    canEdit(domainObject) {
-        return domainObject.type === 'map';
-    }
+            };
+        },
+        priority: function () {
+            return 1;
+        }
+    };
 }
