@@ -22,9 +22,7 @@
 
 import MapServerViewProvider from './MapServerViewProvider';
 
-const MAP_SERVER_URL = 'http://localhost:8888';
-
-export default function MapServerPlugin() {
+export default function MapServerPlugin(source) {
     return function install(openmct) {
         openmct.types.addType('map', {
             name: 'Map',
@@ -33,7 +31,7 @@ export default function MapServerPlugin() {
             creatable: true,
             cssClass: 'icon-layers',
             initialize: function (domainObject) {
-                domainObject.url = MAP_SERVER_URL;
+                domainObject.url = source;
             }
         });
 
