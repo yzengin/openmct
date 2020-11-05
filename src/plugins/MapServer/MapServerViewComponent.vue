@@ -22,7 +22,10 @@
 
 <template>
 <div class="l-iframe abs">
-    <iframe :src="domainObject.url"></iframe>
+    <iframe
+        :src="domainObject.url"
+        :name="domainObject.id"
+    ></iframe>
 </div>
 </template>
 
@@ -33,6 +36,35 @@ export default {
         domainObject: {
             type: Object,
             required: true
+        }
+    },
+    destroyed() {
+        window.removeEventListener('message', this.handleMessage);
+    },
+    mounted() {
+        let mmgis = window.frames[this.domainObject.id];
+        console.log(mmgis);
+
+        window.addEventListener('message', this.handleMessage);
+    },
+    methods: {
+        handleMessage(event) {
+            console.log(event);
+
+            const { origin } = event;
+
+            if (origin !== this.domainObject.url) {
+                console.warn(`Message received from unknown origin: ${origin}`);
+
+                return;
+            }
+
+            // something
+        },
+        postMessage(message) {
+            const target = window.frames[this.domainObject.id];
+
+            target.postMessage(message, this.domainObject.url);
         }
     }
 };
